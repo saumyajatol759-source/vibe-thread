@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VibeThread | WEAR YOUR VIBE - Interactive Apparel</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <!-- Load Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom Styles and Colors */
+        :root {
+            /* Primary: Deep Navy Blue (The Core Brand Color) */
+            --vibe-navy: #0A1931; 
+            /* Secondary Accent: Bright Cyan/Teal (Energetic and Youthful) */
+            --vibe-secondary-accent: #00ADB5; 
+            /* Primary Accent: Standard Blue (For main CTAs) */
+            --vibe-accent: #1D4ED8; 
+            /* Light Background: Off-White/Very Light Gray */
+            --vibe-light-bg: #F0F4F8;
+            /* Crisp White */
+            --vibe-white: #ffffff;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--vibe-light-bg);
+            color: var(--vibe-navy);
+        }
+
+        /* Custom Tailwind Configuration */
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'vibe-navy': 'var(--vibe-navy)',
+                        'vibe-accent': 'var(--vibe-accent)',
+                        'vibe-secondary': 'var(--vibe-secondary-accent)',
+                        'vibe-bg-light': 'var(--vibe-light-bg)',
+                    },
+                    boxShadow: {
+                        'myntra': '0 4px 6px -1px rgba(10, 25, 49, 0.1), 0 2px 4px -2px rgba(10, 25, 49, 0.06)',
+                    }
+                }
+            }
+        }
+
+        /* Custom Navigation Underline (Myntra Style) */
+        .myntra-nav-link {
+            position: relative;
+            padding: 20px 0;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .myntra-nav-link:hover {
+            color: var(--vibe-secondary-accent);
+        }
+        .myntra-nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            height: 4px;
+            width: 100%;
+            max-width: 60px;
+            background-color: var(--vibe-secondary-accent);
+            transition: transform 0.3s ease-in-out;
+        }
+        .myntra-nav-link:hover::after {
+            transform: translateX(-50%) scaleX(1);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- 1. Header & Navigation (Myntra Style) -->
+    <header class="bg-vibe-white shadow-myntra sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto flex justify-between items-center h-20 px-4 sm:px-6 lg:px-8">
+            
+            <!-- Logo/Brand Name -->
+            <a href="#hero" class="text-3xl font-black text-vibe-navy tracking-tighter hover:text-vibe-secondary transition-colors duration-200">
+                VibeThread<span class="text-4xl text-vibe-secondary">.</span>
+            </a>
+            
+            <!-- Navigation Links -->
+            <nav class="hidden lg:flex h-full space-x-6 uppercase text-sm font-semibold">
+                <a href="#drops" class="myntra-nav-link text-vibe-navy">Drops</a>
+                <a href="#" class="myntra-nav-link text-vibe-navy">Tees</a>
+                <a href="#" class="myntra-nav-link text-vibe-navy">Hoodies</a>
+                <a href="#interactive" class="myntra-nav-link text-vibe-navy text-vibe-secondary">Interactive</a>
+                <a href="#pricing" class="myntra-nav-link text-vibe-navy">Vibe Price</a>
+            </nav>
+
+            <!-- Search Bar -->
+            <div class="hidden md:flex items-center flex-1 max-w-sm mx-8 bg-vibe-bg-light rounded-lg h-10 border border-vibe-bg-light focus-within:border-vibe-secondary transition-all duration-200">
+                <i class="fas fa-search text-gray-400 ml-3 mr-2"></i>
+                <input type="text" placeholder="Search for products, drops and vibes..." class="bg-transparent w-full h-full text-sm text-vibe-navy focus:outline-none placeholder-gray-500" />
+            </div>
+
+            <!-- Profile Icons -->
+            <div class="flex items-center space-x-6 text-vibe-navy text-sm font-medium">
+                <div class="text-center hidden sm:block">
+                    <i class="far fa-user text-xl mb-1 hover:text-vibe-secondary transition-colors"></i>
+                    <p>Profile</p>
+                </div>
+                <div class="text-center hidden sm:block">
+                    <i class="far fa-heart text-xl mb-1 hover:text-vibe-secondary transition-colors"></i>
+                    <p>Wishlist</p>
+                </div>
+                <div class="text-center">
+                    <i class="fas fa-shopping-bag text-xl mb-1 hover:text-vibe-secondary transition-colors"></i>
+                    <p>Bag</p>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-button" class="lg:hidden p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-vibe-secondary" aria-label="Toggle Menu">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-vibe-navy/95 backdrop-blur-sm shadow-xl absolute w-full z-40">
+            <div class="px-5 py-4 space-y-2 text-center">
+                <a href="#drops" class="block py-2 text-white hover:bg-vibe-secondary/20 rounded-lg text-lg font-medium" onclick="closeMobileMenu()">Drops</a>
+                <a href="#interactive" class="block py-2 text-white hover:bg-vibe-secondary/20 rounded-lg text-lg font-medium" onclick="closeMobileMenu()">Interactive</a>
+                <a href="#pricing" class="block py-2 text-white hover:bg-vibe-secondary/20 rounded-lg text-lg font-medium" onclick="closeMobileMenu()">Vibe Price</a>
+                <a href="#connect" class="block py-2 text-vibe-navy bg-white rounded-lg text-lg font-bold mt-4 hover:bg-vibe-secondary transition-colors" onclick="closeMobileMenu()">Join The Thread</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto pt-6 pb-20">
+
+        <!-- 2. Hero Banner (UPDATED: White Background, Navy Text) -->
+        <section id="hero" class="mb-12 px-4 sm:px-6 lg:px-8">
+            <!-- Background changed to White, Text color adjusted -->
+            <div class="h-[40vh] sm:h-[60vh] bg-vibe-white rounded-xl flex items-center justify-center p-8 shadow-2xl relative overflow-hidden border-4 border-vibe-navy/10">
+                <!-- Text Overlay is now Navy Blue -->
+                <div class="relative z-10 text-center text-vibe-navy">
+                    <!-- The whole line is now Navy Blue, making it highly visible on the white background -->
+                    <h1 class="text-5xl sm:text-7xl font-black mb-4 leading-tight">WEAR YOUR <span class="text-vibe-navy">VIBE</span>.</h1>
+                    <p class="text-xl sm:text-2xl font-light max-w-2xl mx-auto text-gray-700">
+                        Interactive Fashion. **QR-enabled** drops, **AR prints**, and custom designs.
+                    </p>
+                    <!-- CTA Button changed to Navy for better contrast on white background -->
+                    <a href="#drops" class="mt-6 inline-block px-8 py-3 bg-vibe-navy text-white font-bold rounded-full text-lg shadow-xl hover:bg-vibe-secondary transition-all duration-300">
+                        Explore New Drops
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Category/Product Grid (The Myntra-style Product Carousel/Grid) -->
+        <section id="drops" class="mb-12 px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-extrabold mb-8 uppercase tracking-wider text-vibe-navy border-b-2 border-vibe-secondary inline-block pb-1">
+                New VIBE DROPS
+            </h2>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+
+                <!-- Product Card 1: Genesis Tee -->
+                <div class="bg-vibe-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden group cursor-pointer">
+                    <!-- Placeholder Image Area -->
+                    <div class="h-48 w-full bg-vibe-navy/5 flex items-center justify-center relative">
+                        <span class="text-vibe-navy/70 text-lg font-bold">Genesis Tee</span>
+                        <div class="absolute inset-0 bg-vibe-navy/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="text-vibe-navy bg-vibe-secondary px-4 py-2 rounded-full font-semibold">QUICK VIEW</span>
+                        </div>
+                    </div>
+                    <!-- Product Details -->
+                    <div class="p-4 text-center">
+                        <p class="text-sm text-gray-500 uppercase">Interactive</p>
+                        <h3 class="text-lg font-bold text-vibe-navy my-1">The QR-Code Tee</h3>
+                        <div class="flex justify-center items-end mt-2">
+                            <p class="text-xl font-extrabold text-vibe-secondary">₹699</p>
+                            <span class="text-sm text-gray-500 line-through ml-2">₹1299</span>
+                            <span class="text-sm text-green-600 ml-2 font-semibold">(46% OFF)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 2: Echo Hoodie -->
+                <div class="bg-vibe-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden group cursor-pointer">
+                    <div class="h-48 w-full bg-vibe-navy/10 flex items-center justify-center relative">
+                        <span class="text-vibe-navy/70 text-lg font-bold">Echo Hoodie</span>
+                        <div class="absolute inset-0 bg-vibe-navy/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="text-vibe-navy bg-vibe-secondary px-4 py-2 rounded-full font-semibold">QUICK VIEW</span>
+                        </div>
+                    </div>
+                    <div class="p-4 text-center">
+                        <p class="text-sm text-gray-500 uppercase">AR-Enabled</p>
+                        <h3 class="text-lg font-bold text-vibe-navy my-1">Animated Print Hood</h3>
+                        <div class="flex justify-center items-end mt-2">
+                            <p class="text-xl font-extrabold text-vibe-secondary">₹899</p>
+                            <span class="text-sm text-gray-500 line-through ml-2">₹1799</span>
+                            <span class="text-sm text-green-600 ml-2 font-semibold">(50% OFF)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 3: Custom Vibe -->
+                <div class="bg-vibe-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden group cursor-pointer">
+                    <div class="h-48 w-full bg-vibe-secondary/20 flex items-center justify-center relative">
+                        <span class="text-vibe-secondary font-bold text-lg">Custom Vibe</span>
+                        <div class="absolute inset-0 bg-vibe-navy/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="text-vibe-navy bg-vibe-secondary px-4 py-2 rounded-full font-semibold">START DESIGN</span>
+                        </div>
+                    </div>
+                    <div class="p-4 text-center">
+                        <p class="text-sm text-gray-500 uppercase">Personalized</p>
+                        <h3 class="text-lg font-bold text-vibe-navy my-1">Your Story. Your Thread.</h3>
+                        <div class="flex justify-center items-end mt-2">
+                            <p class="text-xl font-extrabold text-vibe-secondary">₹900</p>
+                            <span class="text-sm text-gray-500 ml-2">(Starting Price)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Card 4: Basic Tee -->
+                <div class="bg-vibe-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden group cursor-pointer">
+                    <div class="h-48 w-full bg-vibe-navy/5 flex items-center justify-center relative">
+                        <span class="text-vibe-navy/70 text-lg font-bold">Core White Tee</span>
+                        <div class="absolute inset-0 bg-vibe-navy/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="text-vibe-navy bg-vibe-secondary px-4 py-2 rounded-full font-semibold">QUICK VIEW</span>
+                        </div>
+                    </div>
+                    <div class="p-4 text-center">
+                        <p class="text-sm text-gray-500 uppercase">Essentials</p>
+                        <h3 class="text-lg font-bold text-vibe-navy my-1">Core Vibe Tee</h3>
+                        <div class="flex justify-center items-end mt-2">
+                            <p class="text-xl font-extrabold text-vibe-secondary">₹600</p>
+                            <span class="text-sm text-gray-500 ml-2">(Lowest Price)</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Product Card 5: Limited Edition -->
+                <div class="bg-vibe-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden group cursor-pointer hidden xl:block">
+                    <div class="h-48 w-full bg-vibe-navy flex items-center justify-center relative">
+                        <span class="text-white text-lg font-bold">Drop X</span>
+                        <div class="absolute top-2 right-2 px-3 py-1 bg-red-600 text-white text-xs font-bold rounded-full">LIMITED</div>
+                        <div class="absolute inset-0 bg-vibe-navy/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <span class="text-vibe-navy bg-vibe-secondary px-4 py-2 rounded-full font-semibold">VIEW DROP</span>
+                        </div>
+                    </div>
+                    <div class="p-4 text-center">
+                        <p class="text-sm text-gray-500 uppercase">Exclusive</p>
+                        <h3 class="text-lg font-bold text-vibe-navy my-1">The Navy Deep Dive</h3>
+                        <div class="flex justify-center items-end mt-2">
+                            <p class="text-xl font-extrabold text-vibe-secondary">₹799</p>
+                            <span class="text-sm text-gray-500 ml-2">(Fast Selling)</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 4. Interactive & Pricing Banner (Feature Spotlight) -->
+        <section id="interactive" class="mb-12 px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-extrabold mb-8 uppercase tracking-wider text-vibe-navy border-b-2 border-vibe-secondary inline-block pb-1">
+                The VibeThread Difference
+            </h2>
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Interactive Feature Banner -->
+                <div class="bg-vibe-navy p-8 rounded-xl shadow-xl flex flex-col justify-center items-start text-white">
+                    <h3 class="text-4xl font-black mb-3 text-vibe-secondary">Interactive AR.</h3>
+                    <p class="text-xl font-light mb-4 text-gray-200">
+                        Scan the fabric, unlock the digital story. **QR codes** give you playlists, while **AR prints** come to life on your phone.
+                    </p>
+                    <a href="#" class="inline-block px-6 py-2 bg-vibe-secondary text-vibe-navy font-bold rounded-full hover:bg-white transition-all duration-300">
+                        See Demo
+                    </a>
+                </div>
+
+                <!-- Pricing Feature Banner -->
+                <div id="pricing" class="bg-vibe-white p-8 rounded-xl shadow-xl flex flex-col justify-center items-start border-2 border-vibe-secondary">
+                    <h3 class="text-4xl font-black mb-3 text-vibe-navy">Vibe Price Promise.</h3>
+                    <p class="text-xl font-light mb-4 text-gray-700">
+                        **Teen-Friendly Pricing** for the highest quality. Most items range from **₹600 to ₹900**.
+                    </p>
+                    <a href="#" class="inline-block px-6 py-2 bg-vibe-navy text-white font-bold rounded-full hover:bg-vibe-secondary hover:text-vibe-navy transition-all duration-300">
+                        View Price List
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Connect/CTA Section -->
+        <section id="connect" class="mb-12 px-4 sm:px-6 lg:px-8">
+            <div class="bg-vibe-bg-light p-10 rounded-xl text-center border border-vibe-secondary/30">
+                <h2 class="text-3xl font-extrabold mb-4 text-vibe-navy">Join The Thread Community</h2>
+                <p class="text-lg text-gray-700 mb-6">Be the first to know about custom drops and exclusive Vibe unlocks.</p>
+                <form id="contact-form" class="max-w-md mx-auto flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                    <input type="email" id="email" placeholder="Enter your email" required 
+                           class="flex-1 p-3 rounded-lg text-vibe-navy border-2 border-vibe-navy/10 focus:ring-2 focus:ring-vibe-secondary focus:border-vibe-secondary transition-all duration-200">
+                    <button type="submit" class="p-3 bg-vibe-secondary text-vibe-navy font-bold rounded-lg shadow-md hover:bg-vibe-navy hover:text-white transition-colors duration-300">
+                        Sign Up for Early Access
+                    </button>
+                </form>
+                <p id="form-message" class="text-sm pt-4 text-gray-700 font-medium"></p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-vibe-white border-t border-vibe-secondary/30 py-10 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-vibe-navy">
+            
+            <!-- Company Info -->
+            <div>
+                <h4 class="font-bold text-lg mb-4">ONLINE SHOPPING</h4>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="#drops" class="hover:text-vibe-secondary transition-colors">New Drops</a></li>
+                    <li><a href="#" class="hover:text-vibe-secondary transition-colors">Vibe Tees</a></li>
+                    <li><a href="#" class="hover:text-vibe-secondary transition-colors">Custom Orders</a></li>
+                </ul>
+            </div>
+
+            <!-- Customer Service -->
+            <div>
+                <h4 class="font-bold text-lg mb-4">CUSTOMER POLICIES</h4>
+                <ul class="space-y-2 text-sm text-gray-600">
+                    <li><a href="#" class="hover:text-vibe-secondary transition-colors">Contact Us</a></li>
+                    <li><a href="#" class="hover:text-vibe-secondary transition-colors">Privacy Policy</a></li>
+                    <li><a href="#" class="hover:text-vibe-secondary transition-colors">Shipping</a></li>
+                    <li><a href="#" class="hover:text-vibe-secondary transition-colors">Returns & Exchange</a></li>
+                </ul>
+            </div>
+
+            <!-- Experience -->
+            <div>
+                <h4 class="font-bold text-lg mb-4">EXPERIENCE</h4>
+                <p class="text-sm text-gray-600">Download the VibeThread App for AR unlocks!</p>
+                <div class="flex space-x-2 mt-3">
+                    <i class="fab fa-google-play text-2xl hover:text-vibe-secondary transition-colors"></i>
+                    <i class="fab fa-app-store text-2xl hover:text-vibe-secondary transition-colors"></i>
+                </div>
+            </div>
+
+            <!-- Social -->
+            <div>
+                <h4 class="font-bold text-lg mb-4">KEEP IN TOUCH</h4>
+                <div class="flex space-x-3">
+                    <a href="#"><i class="fab fa-instagram text-2xl hover:text-vibe-secondary transition-colors"></i></a>
+                    <a href="#"><i class="fab fa-twitter text-2xl hover:text-vibe-secondary transition-colors"></i></a>
+                    <a href="#"><i class="fab fa-youtube text-2xl hover:text-vibe-secondary transition-colors"></i></a>
+                </div>
+                <p class="text-xs text-gray-500 mt-4">&copy; <span id="current-year"></span> VibeThread. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu and Form Handling -->
+    <script>
+        // Function to close mobile menu
+        function closeMobileMenu() {
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const contactForm = document.getElementById('contact-form');
+            const formMessage = document.getElementById('form-message');
+
+            // 1. Mobile Menu Toggle
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            // 2. Set Current Year in Footer
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+            // 3. Simple Form Submission Handling (Simulated)
+            contactForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const emailInput = document.getElementById('email');
+                const button = contactForm.querySelector('button[type="submit"]');
+
+                if (!emailInput.value) {
+                    formMessage.textContent = 'Please enter your email address.';
+                    formMessage.className = 'text-sm pt-4 text-red-600 font-medium';
+                    return;
+                }
+
+                button.textContent = 'Subscribing...';
+                button.disabled = true;
+
+                // Simulate a network request delay
+                setTimeout(() => {
+                    formMessage.textContent = `Vibe captured! We've sent a welcome note to ${emailInput.value}.`;
+                    formMessage.className = 'text-sm pt-4 text-vibe-secondary font-medium';
+                    
+                    emailInput.value = '';
+                    button.textContent = 'Subscribed!';
+                    button.disabled = false;
+                }, 1500);
+            });
+        });
+    </script>
+
+</body>
+</html>
